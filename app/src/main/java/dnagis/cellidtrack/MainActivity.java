@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
         //http://stackoverflow.com/questions/10600670/sqlitedatabase-query-method
         //query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit)
 
-        Cursor cursor = bdd.query("cronjob", null, null, null, null, null, "ID DESC");
+        Cursor cursor = bdd.query("cellid", null, null, null, null, null, "ID DESC");
 
         if (cursor != null) {
             cursor.moveToFirst();

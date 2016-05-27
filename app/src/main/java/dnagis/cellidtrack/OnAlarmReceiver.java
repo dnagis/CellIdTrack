@@ -65,7 +65,7 @@ public class OnAlarmReceiver extends BroadcastReceiver {
 
         values.put("TIME", timestamp);
         values.put("CELLID", cellid);
-        bdd.insert("cronjob", null, values);
+        bdd.insert("cellid", null, values);
 
 
 

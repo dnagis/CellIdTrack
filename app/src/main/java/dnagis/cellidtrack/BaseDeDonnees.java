@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class BaseDeDonnees extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "cronjob.db";
+    private static final String DATABASE_NAME = "cellid.db";
     private static final int DATABASE_VERSION = 1;
-    private static final String CREATE_BDD = "CREATE TABLE cronjob (ID INTEGER PRIMARY KEY AUTOINCREMENT, TIME INTEGER NOT NULL, CELLID INTEGER NOT NULL)";
+    private static final String CREATE_BDD = "CREATE TABLE cellid (ID INTEGER PRIMARY KEY AUTOINCREMENT, TIME INTEGER NOT NULL, CELLID INTEGER NOT NULL)";
 
     public BaseDeDonnees(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
