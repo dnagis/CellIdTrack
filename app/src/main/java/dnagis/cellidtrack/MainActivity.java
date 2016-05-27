@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
         TextView cellid_textvw = (TextView)findViewById(R.id.last_cellid);
 
         BaseDeDonnees maBDD;
-        int ID_MAX;
+        int COUNT;
         int CELLID;
         long EPOCH;
 
@@ -70,15 +70,15 @@ public class MainActivity extends Activity {
         //query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit)
 
         Cursor cursor = bdd.query("cellid", null, null, null, null, null, "ID DESC");
+        COUNT = cursor.getCount();
+        id_textvw.setText(String.valueOf(COUNT));
 
-        if (cursor != null) {
+        if ((cursor != null) && (COUNT > 0)) {
             cursor.moveToFirst();
 
-            ID_MAX = cursor.getInt(0);
             CELLID = cursor.getInt(2);
             EPOCH = cursor.getLong(1);
 
-            id_textvw.setText(String.valueOf(ID_MAX));
             cellid_textvw.setText(String.valueOf(CELLID));
 
             Date date = new Date(EPOCH);
