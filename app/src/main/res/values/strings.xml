@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">CellIdTrack</string>
+    <string name="default_date">Date par défaut</string>
+    <string name="hello_world">Cronjob en Sqlite...</string>
+    <string name="action_settings">Settings</string>
+    <string name="local_service_started">Demarre</string>
+    <string name="local_service_stopped">Stoppe</string>
+    <string name="local_service_label">Label</string>
 </resources>
