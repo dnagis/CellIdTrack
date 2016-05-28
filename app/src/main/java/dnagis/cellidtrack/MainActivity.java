@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -29,25 +30,26 @@ import java.util.Locale;
 
 public class MainActivity extends Activity {
 
+    static boolean firstTimeDone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        on_demarre();
+        if (!firstTimeDone)
+            lance_cronjob();
 
         affiche_infos_db();
 
     }
 
 
-    public void on_demarre(){
+    public void lance_cronjob(){
+        firstTimeDone = true;
         AlarmManager mgr= (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
         Intent i=new Intent(this, OnAlarmReceiver.class);
         PendingIntent pi= PendingIntent.getBroadcast(this, 0, i, 0);
         mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 600000, pi);
-        //Dans le log j'ai:04-25 10:41:30.130    1898-3699/? W/AlarmManager﹕ Suspiciously short interval 5000 millis; expanding to 60 seconds
-        //toutes les 60s après j'ai: AlarmManager﹕ sending alarm {d33ff0f type 2 *walarm*:com.morphotox.cronjob/.OnAlarmReceiver}
     }
 
     public void affiche_infos_db() {
