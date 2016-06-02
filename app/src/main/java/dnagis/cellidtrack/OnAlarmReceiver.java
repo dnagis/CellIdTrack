@@ -1,11 +1,14 @@
 package dnagis.cellidtrack;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.telephony.CellInfo;
 import android.telephony.CellInfoCdma;
 import android.telephony.CellInfoGsm;
@@ -41,10 +44,16 @@ public class OnAlarmReceiver extends BroadcastReceiver {
         TelephonyManager telph= (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE); //il faut lui passer le context
         int mode_avion = Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0);
 
-        if (mode_avion != 1) {
+        int permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION); //depuis API23 les permissions au runtime... sigh...
+        if (permissionCheck == PackageManager.PERMISSION_DENIED)
+            cellid = -18;
+
+
+
+        if ((mode_avion != 1) && (permissionCheck == PackageManager.PERMISSION_GRANTED)) {
             List<CellInfo> cellinfo = telph.getAllCellInfo();
-            //dans le métro quand cartes sims activées mais aucun signal ça plante... je suspecte soit cellinfo null soit size=0
-            if (cellinfo != null) {
+           //dans le métro quand cartes sims activées mais aucun signal ça plante... check (cellinfo != null)-pas suffisant finalement size marche bien
+            if (cellinfo.size() > 0) {
                 CellInfo cell0 = cellinfo.get(0);
                 if (cell0 instanceof CellInfoGsm) {
                     cellid = ((CellInfoGsm) cell0).getCellIdentity().getCid();
@@ -55,6 +64,8 @@ public class OnAlarmReceiver extends BroadcastReceiver {
                 } else if (cell0 instanceof CellInfoWcdma) {
                     cellid = ((CellInfoWcdma) cell0).getCellIdentity().getCid();
                 }
+            } else {
+                cellid = 0; //code pour se rappeler que cellid est vide (genre métro)
             }
         }
 
