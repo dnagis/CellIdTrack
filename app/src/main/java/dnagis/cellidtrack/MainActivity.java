@@ -23,7 +23,7 @@ import java.util.Locale;
 //http://stackoverflow.com/questions/11733736/alarmmanager-never-calling-onreceive-in-alarmreceiver-broadcastreceiver "parle de après reboot"
 
 /*
-* adb backup -f data.ab -noapk com.morphotox.cronjob
+* adb backup -f data.ab -noapk dnagis.cellidtrack
 * dd if=data.ab bs=1 skip=24 | openssl zlib -d | tar -xvf -
 * convertir epoch avec busybox date: date -d @1464159452 ##enlever les 3 lasts (ms)
 */
