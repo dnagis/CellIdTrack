@@ -39,10 +39,16 @@ public class OnAlarmReceiver extends BroadcastReceiver {
         ContentValues values = new ContentValues();
 
         long timestamp = System.currentTimeMillis();
-        int cellid=-1;
+
 
         TelephonyManager telph= (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE); //il faut lui passer le context
         int mode_avion = Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0);
+
+        int cellid = -1; //par défault
+        int lac = -1;
+        int mnc = -1;
+        int mcc = -1;
+        String radio = "unknown";
 
         int permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION); //depuis API23 les permissions au runtime... sigh...
         if (permissionCheck == PackageManager.PERMISSION_DENIED)
@@ -51,19 +57,35 @@ public class OnAlarmReceiver extends BroadcastReceiver {
 
 
         if ((mode_avion != 1) && (permissionCheck == PackageManager.PERMISSION_GRANTED)) {
+            //http://www.programcreek.com/java-api-examples/index.php?api=android.telephony.CellInfo
             List<CellInfo> cellinfo = telph.getAllCellInfo();
            //dans le métro quand cartes sims activées mais aucun signal ça plante... check (cellinfo != null)-pas suffisant finalement size marche bien
             if (cellinfo.size() > 0) {
                 CellInfo cell0 = cellinfo.get(0);
+
                 if (cell0 instanceof CellInfoGsm) {
                     cellid = ((CellInfoGsm) cell0).getCellIdentity().getCid();
-                } else if (cell0 instanceof CellInfoCdma) {
+                    lac = ((CellInfoGsm) cell0).getCellIdentity().getLac();
+                    mnc = ((CellInfoGsm) cell0).getCellIdentity().getMnc();
+                    mcc = ((CellInfoGsm) cell0).getCellIdentity().getMcc();
+                    radio = "GSM";
+                } else if (cell0 instanceof CellInfoCdma) { //2g ??
                     cellid = ((CellInfoCdma) cell0).getCellIdentity().getBasestationId();
-                } else if (cell0 instanceof CellInfoLte) {
+                    radio = "CDMA";
+                } else if (cell0 instanceof CellInfoLte) { //4G??
                     cellid = ((CellInfoLte) cell0).getCellIdentity().getCi();
-                } else if (cell0 instanceof CellInfoWcdma) {
+                    mnc = ((CellInfoLte) cell0).getCellIdentity().getMnc();
+                    mcc = ((CellInfoLte) cell0).getCellIdentity().getMcc();
+                    lac = ((CellInfoLte) cell0).getCellIdentity().getTac();
+                    radio = "LTE";
+                } else if (cell0 instanceof CellInfoWcdma) { //3G? UMTS?
                     cellid = ((CellInfoWcdma) cell0).getCellIdentity().getCid();
+                    lac = ((CellInfoWcdma) cell0).getCellIdentity().getLac();
+                    mnc = ((CellInfoWcdma) cell0).getCellIdentity().getMnc();
+                    mcc = ((CellInfoWcdma) cell0).getCellIdentity().getMcc();
+                    radio = "UMTS";
                 }
+
             } else {
                 cellid = 0; //code pour se rappeler que cellid est vide (genre métro)
             }
@@ -76,6 +98,10 @@ public class OnAlarmReceiver extends BroadcastReceiver {
 
         values.put("TIME", timestamp);
         values.put("CELLID", cellid);
+        values.put("LAC", lac);
+        values.put("MNC", mnc);
+        values.put("MCC", mcc);
+        values.put("RADIO", radio);
         bdd.insert("cellid", null, values);
 
 

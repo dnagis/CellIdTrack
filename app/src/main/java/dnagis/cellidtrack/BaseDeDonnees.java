@@ -11,7 +11,7 @@ public class BaseDeDonnees extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "cellid.db";
     private static final int DATABASE_VERSION = 1;
-    private static final String CREATE_BDD = "CREATE TABLE cellid (ID INTEGER PRIMARY KEY AUTOINCREMENT, TIME INTEGER NOT NULL, CELLID INTEGER NOT NULL)";
+    private static final String CREATE_BDD = "CREATE TABLE cellid (ID INTEGER PRIMARY KEY AUTOINCREMENT, TIME INTEGER NOT NULL, CELLID INTEGER NOT NULL, MCC INTEGER NOT NULL, MNC INTEGER NOT NULL, LAC INTEGER NOT NULL, RADIO TEXT NOT NULL)";
 
     public BaseDeDonnees(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
