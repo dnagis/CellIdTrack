@@ -20,7 +20,15 @@
                             <action android:name="android.intent.action.NOTIFY" />
                         </intent-filter>-->
         </receiver>
+        <receiver android:name=".OnBoot" android:exported="true">
+            -           <intent-filter>
+                        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                        </intent-filter>
+        </receiver>
     </application>
+
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
