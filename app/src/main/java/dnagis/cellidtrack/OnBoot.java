@@ -24,7 +24,7 @@ public class OnBoot extends BroadcastReceiver {
         AlarmManager mgr= (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
         Intent i=new Intent(context, OnAlarmReceiver.class);
         PendingIntent pi= PendingIntent.getBroadcast(context, 0, i, 0);
-        mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 600000, pi);
+        mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 3600000, pi);
 
         // Start service
         //context.startService(i);

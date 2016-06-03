@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
         AlarmManager mgr= (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
         Intent i=new Intent(this, OnAlarmReceiver.class);
         PendingIntent pi= PendingIntent.getBroadcast(this, 0, i, 0);
-        mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 600000, pi);
+        mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 3600000, pi);
     }
 
     public void affiche_infos_db() {
